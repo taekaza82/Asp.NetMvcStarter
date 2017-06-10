@@ -1,0 +1,39 @@
+﻿
+@using MvcStarter01.Web.Models
+@model CarViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>Car Count : @Model.CountOfCars</p>
+
+<table class="table">
+    <tr>
+        <th>Car ID</th>
+        <th>License No</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Color</th>
+        <th>Driver Name</th>
+        <th>Driver License No</th>
+        <th>Refuel</th>
+    </tr>
+    @foreach(var item in Model.Cars)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.RegisterNo</td>
+            <td>@item.Brand</td>
+            <td>@item.Model</td>
+            <td>@item.Color</td>
+            <td>@item.Driver.FirstName @item.Driver.LastName</td>
+            <td>@item.Driver.LicenseNo</td>
+            <td>@Html.ActionLink("Refuel", "Refuel", new { id = item.Id })</td>
+        </tr>
+    }
+</table>
+

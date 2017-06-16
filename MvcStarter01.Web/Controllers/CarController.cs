@@ -53,5 +53,31 @@ namespace MvcStarter01.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult SaveFuel(Refuel refuel)
+        {
+            var fuelTrackerLogic = new FuelTrackerLogic();
+
+            var saveResult = fuelTrackerLogic.SaveRefeul(refuel.CarId, refuel.FuelBefore, refuel.FuelAmount);
+
+            var result = new Result();
+            if (saveResult == true)
+            {
+                result.Status = "SUCCESS";
+                result.Message = "Save Complete.";
+            }
+            else
+            {
+                result.Status = "FAILED";
+                result.Message = "Save Failed, please try again.";
+            }
+
+            return Json(new
+            {
+                Result = result
+            }, JsonRequestBehavior.AllowGet);              
+           
+        }
+
     }
 }

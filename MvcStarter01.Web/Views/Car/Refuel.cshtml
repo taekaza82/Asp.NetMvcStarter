@@ -6,25 +6,57 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<script type="text/javascript">
+
+    function AddRefuel()
+    {
+        $body = $("body");
+        var Id = document.getElementById("Id").value;
+        var beforeFuel = document.getElementById("beforeFuel").value;
+        var refuelAmount = document.getElementById("refuelAmount").value;
+
+        $body.addClass("loading");
+
+        $.ajax({
+            url: '@Url.Action("SaveFuel", "Car")',
+            type: 'post',
+            data: {
+                CarId: Id,
+                FuelBefore: beforeFuel,
+                FuelAmount: refuelAmount
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                window.alert("Save Failed");
+                $body.RemoveClass("loading");
+            }
+        }).done(function (data) {
+            window.alert(data.Result.Message);
+            $body.removeClass("loading");
+        });
+    }
+</script>
+
 <h2>Refuel</h2>
 
-@using (Html.BeginForm())
-{
-    <div class="form-horizontal">
-        <div class="form-group">
-            Car License No : @Model.RegisterNo
-        </div>
-        <div class="form-group">
-            Before Fuel :
-            @Html.TextBox("beforeFuel", "", new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            Refuel Amount :
-            @Html.TextBox("refuelAmount", "", new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-danger" />
-            <p class="text-danger">@ViewBag.Message</p>
-        </div>
+@Html.HiddenFor(m => m.Id)
+<div class="form-horizontal">
+    <div class="form-group">
+        Car License No : @Model.RegisterNo
     </div>
-}
+    <div class="form-group">
+        Before Fuel :
+        @Html.TextBox("beforeFuel", "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        Refuel Amount :
+        @Html.TextBox("refuelAmount", "", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-danger" onclick="AddRefuel()" />
+        <p class="text-danger">@ViewBag.Message</p>
+    </div>
+</div>
+
+<div class="modal"></div>
+
